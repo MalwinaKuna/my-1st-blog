@@ -8,12 +8,12 @@ const connection = mysql.createConnection({
     database: 'new_schema_23_07'
 });
 //post.getPosts();
-   connection.query(
-        `SELECT * FROM new_schema_23_07.posts;`,
-           (error, results, fields) => {
-               if (error) throw error;
-               console.log('The solution is: ', results);
-           }
-       )
+connection.query(
+  `SELECT * FROM new_schema_23_07.posts;`,
+     (error, results, fields) => {
+         if (error) throw error;
+         console.log('The solution is: ', results);
+     }
+ );
 connection.end();
 //getPosts();
