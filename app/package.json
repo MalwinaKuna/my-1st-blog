@@ -1,8 +1,11 @@
 {
-  "name": "my-1st-blog",
+  "name": "app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,14 +13,13 @@
     "type": "git",
     "url": "git+https://github.com/MalwinaKuna/my-1st-blog.git"
   },
-  "author": "SupeKuna",
+  "author": "SuperKuna",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/MalwinaKuna/my-1st-blog/issues"
   },
   "homepage": "https://github.com/MalwinaKuna/my-1st-blog#readme",
   "dependencies": {
-    "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "jest": "^24.8.0",
     "mysql": "^2.17.1"

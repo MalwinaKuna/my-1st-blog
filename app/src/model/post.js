@@ -1,4 +1,5 @@
 //funkcje
+const connection = require('./connection'); // <--
 
 class PostEntity { //encja, if id is not defined write null
     constructor(id, title, slug, content) {
@@ -8,20 +9,31 @@ class PostEntity { //encja, if id is not defined write null
         this.content = content;
     }
 }
+/**
+ * let promise= new Promise((resolve, reject)=>{
+ * function})
+ * variable= await promise;
+ */
+async function savePost(post) {
+    let promise = new Promise((resolve, reject) => {
+        connection.query(
+            `INSERT INTO posts (title,slug,content) VALUES ('${post.title}','${post.slug}','${post.content}');`,
+            function(error, results, fields)  {
+                if (error) {
+                    reject(error);
+                }
+                console.log('The solution is: ', results);
+                resolve(results.insertId);
+            }
+        );
+    });
 
-function savePost(post) {
-    connection.query(
-        `INSERT INTO posts (title,content) VALUES (${title},${content});`,
-        (error, results, fields) => {
-            if (error) throw error;
-            console.log('The solution is: ', results);
-        }
-    );
+    post.id= await promise;
 }
 
 function updatePost(post) {
     connection.query(
-        `UPDATE post SET (title,content) values ('','') WHERE id= ${id};`,
+        `UPDATE posts SET (title,content) values ('','') WHERE id= ${id};`,
         (error, results, fields) => {
             if (error) throw error;
             console.log('The solution is: ', results);
@@ -41,7 +53,7 @@ function deletePost(post) {
 
 function getPost(id) {
     connection.query(
-        `SELECT * from new_schema_23_07.posts WHERE id= ${id};`,
+        `SELECT * from posts WHERE id= ${id};`,
         (error, results, fields) => {
             if (error) throw error;
             console.log('The solution is: ', results);
@@ -51,7 +63,7 @@ function getPost(id) {
 
 function getPosts() {
     connection.query(
-        `SELECT * FROM new_schema_23_07.posts;`,
+        `SELECT * FROM posts;`,
         (error, results, fields) => {
             if (error) throw error;
             console.log('The solution is: ', results);
