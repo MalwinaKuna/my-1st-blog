@@ -1,4 +1,4 @@
-const connection = require('./connection'); // <--
+const connection = require('./connection');
 class PostEntity {
     constructor(id, title, slug, content) {
         this.id = id;
@@ -21,31 +21,17 @@ async function insertPost(post) {
     post.id = await promise;
 }
 async function getPosts() {
-    let promise = new Promise((resolve, reject) => {
-        connection.query(
-            `SELECT * FROM posts;`,
-            (error, results, fields) => {
-                if (error) reject(error);
-                resolve(console.log('The solution is ', results));
-            }
-        );
-    })
-    return promise;
-}
-async function getPostsS() {
     let promise = [];
     promise = new Promise((resolve, reject) => {
         connection.query(
             `SELECT * FROM posts;`,
             (error, results, fields) => {
                 if (error) reject(error);
-                //resolve(console.log('The solution is ', results));
                 let posts = [];
-                //to do
                 for (let i = 0; i < results.length; i++) {
                     posts.push(new PostEntity(results[i].id, results[i].title, results[i].slug, results[i].content)); //?
                 }
-                resolve(posts);
+                resolve(posts, console.log('The solution is ', results));
             }
         );
     })
@@ -95,7 +81,6 @@ function deletePosts() {
 }
 async function updatePost(post) {
     let promise = new Promise((resolve, reject) => {
-
         connection.query(
             `UPDATE posts SET title='${post.title}', slug='${post.slug}', content='${post.content}' WHERE id='${post.id}'`,
             (error, results, fields) => {
@@ -109,7 +94,6 @@ async function updatePost(post) {
 module.exports = {
     insertPost,
     getPosts,
-    getPostsS,
     getPost,
     deletePost,
     deletePosts,
