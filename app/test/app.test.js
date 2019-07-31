@@ -33,10 +33,6 @@ test('add, check and delete posts', async () => {
     await postModel.insertPost(post2);
     await postModel.insertPost(post3);
 
-    expect(post1.id).not.toBe(null);
-    expect(post2.id).not.toBe(null);
-    expect(post3.id).not.toBe(null);
-
     function comparePost(post1, post2) {
         if (post1.title === post2.title && post1.slug === post2.slug && post1.content === post2.content) {
             return true;
