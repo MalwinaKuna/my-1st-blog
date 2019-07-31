@@ -31,7 +31,7 @@ async function getPosts() {
                 for (let i = 0; i < results.length; i++) {
                     posts.push(new PostEntity(results[i].id, results[i].title, results[i].slug, results[i].content)); //?
                 }
-                resolve(posts, console.log('The solution is ', results));
+                resolve(posts);
             }
         );
     })
