@@ -57,11 +57,9 @@ test('add, check and delete posts', async () => {
         }
     }
     expect(match).toEqual(3);
-    expect(await postModel.deletePost(post1.id)).toBe(true);
-    expect(await postModel.deletePost(post2.id)).toBe(true);
-    expect(await postModel.deletePost(post3.id)).toBe(true);
+    await postModel.deletePost(post1.id);
+    await postModel.deletePost(post2.id);
+    await postModel.deletePost(post3.id);
 
-    expect(await postModel.deletePost(post1.id)).toBe(false);
-    expect(await postModel.deletePost(post2.id)).toBe(false);
-    expect(await postModel.deletePost(post3.id)).toBe(false);
+ 
 })
