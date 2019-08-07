@@ -27,6 +27,7 @@ async function getPosts() {
             `SELECT * FROM posts;`,
             (error, results, fields) => {
                 if (error) reject(error);
+                console.log('The solution is ', results);
                 let posts = [];
                 for (let i = 0; i < results.length; i++) {
                     posts.push(new PostEntity(results[i].id, results[i].title, results[i].slug, results[i].content)); //?
