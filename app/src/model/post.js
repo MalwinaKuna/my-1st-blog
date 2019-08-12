@@ -9,7 +9,7 @@ class PostEntity {
 }
 /** 
  * @param {PostEntity} post
- * @returns {Promise<Object>} 
+ * @returns {Promise<undefind>}
  */
 async function insertPost(post) {
     let promise = new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ async function insertPost(post) {
     post.id = await promise;
 }
 /** 
- * @returns {Promise<Object>} 
+ * @returns {Promise<PostEntity[]>} 
  */
 async function getPosts() {
     let promise = [];
@@ -45,7 +45,7 @@ async function getPosts() {
 }
 /** 
  * @param {number} id
- * @returns {Promise<Object>} 
+ * @returns {Promise<PostEntity>} 
  */
 async function getPost(id) {
     let promise = new Promise((resolve, reject) => {
@@ -62,7 +62,7 @@ async function getPost(id) {
 }
 /** 
  * @param {PostEntity} post
- * @returns {Promise<Object>} 
+ * @returns {Promise<boolean>}- it depends on if the entity was deleted or not
  */
 async function deletePost(post) {
     let promise = new Promise((resolve, reject) => {
@@ -83,7 +83,7 @@ async function deletePost(post) {
 }
 /** 
  * @param {PostEntity} post
- * @returns {Promise<Object>} 
+ * @returns {Promise<undefined>} - we don't want to return anything in this promise 
  */
 async function updatePost(post) {
     let promise = new Promise((resolve, reject) => {
