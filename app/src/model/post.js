@@ -7,6 +7,10 @@ class PostEntity {
         this.content = content;
     }
 }
+/** 
+ * @param {PostEntity} post
+ * @returns {Promise<Object>} 
+ */
 async function insertPost(post) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
@@ -19,6 +23,9 @@ async function insertPost(post) {
     })
     post.id = await promise;
 }
+/** 
+ * @returns {Promise<Object>} 
+ */
 async function getPosts() {
     let promise = [];
     promise = new Promise((resolve, reject) => {
@@ -36,6 +43,10 @@ async function getPosts() {
     })
     return promise;
 }
+/** 
+ * @param {number} id
+ * @returns {Promise<Object>} 
+ */
 async function getPost(id) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
@@ -49,6 +60,10 @@ async function getPost(id) {
     })
     return promise;
 }
+/** 
+ * @param {PostEntity} post
+ * @returns {Promise<Object>} 
+ */
 async function deletePost(post) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
@@ -66,7 +81,10 @@ async function deletePost(post) {
     })
     return promise;
 }
-
+/** 
+ * @param {PostEntity} post
+ * @returns {Promise<Object>} 
+ */
 async function updatePost(post) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
