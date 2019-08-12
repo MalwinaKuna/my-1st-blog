@@ -13,7 +13,6 @@ async function insertPost(post) {
             `INSERT INTO posts (title,slug,content) VALUES ('${post.title}','${post.slug}','${post.content}');`,
             (error, results, fields) => {
                 if (error) reject(error);
-                console.log('The solution is ', results);
                 resolve(results.insertId);
             }
         );
@@ -43,7 +42,6 @@ async function getPost(id) {
             `SELECT * FROM posts WHERE id='${id}';`,
             (error, results, fields) => {
                 if (error) reject(error);
-                console.log('The solution is ', results);
                 let post = new PostEntity(results[0].id, results[0].title, results[0].slug, results[0].content);
                 resolve(post);
             }
@@ -51,16 +49,15 @@ async function getPost(id) {
     })
     return promise;
 }
-async function deletePost(id) {
+async function deletePost(post) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
-            `DELETE FROM posts WHERE id='${id}';`,
+            `DELETE FROM posts WHERE id='${post.id}';`,
             (error, results, fields) => {
                 if (error) resolve(false);
-                console.log('The solution is ', results);
-                if (results.affectedRows > 0)
+                if (results.affectedRows > 0) {
                     resolve(true);
-                else {
+                } else {
                     resolve(false);
                 }
             }
@@ -70,22 +67,13 @@ async function deletePost(id) {
     return promise;
 }
 
-function deletePosts() {
-    connection.query(
-        `DELETE FROM posts;`,
-        (error, results, fields) => {
-            if (error) throw error;
-            console.log('The solution is ', results);
-        }
-    );
-}
 async function updatePost(post) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
             `UPDATE posts SET title='${post.title}', slug='${post.slug}', content='${post.content}' WHERE id='${post.id}'`,
             (error, results, fields) => {
                 if (error) reject(error);
-                resolve(console.log('The solution is ', results));
+                resolve(undefined);
             }
         );
     })
@@ -96,7 +84,6 @@ module.exports = {
     getPosts,
     getPost,
     deletePost,
-    deletePosts,
     PostEntity,
     updatePost
 }
