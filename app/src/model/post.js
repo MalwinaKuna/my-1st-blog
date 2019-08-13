@@ -1,5 +1,12 @@
 const connection = require('./connection');
 class PostEntity {
+    /**
+     * 
+     * @param {number} id 
+     * @param {string} title 
+     * @param {string} slug 
+     * @param {string} content 
+     */
     constructor(id, title, slug, content) {
         this.id = id;
         this.title = title;
@@ -10,6 +17,7 @@ class PostEntity {
 /** 
  * @param {PostEntity} post
  * @returns {Promise<undefind>}
+ * @throws {MysqlError}
  */
 async function insertPost(post) {
     let promise = new Promise((resolve, reject) => {
@@ -25,6 +33,7 @@ async function insertPost(post) {
 }
 /** 
  * @returns {Promise<PostEntity[]>} 
+ * @throws {MysqlError} error
  */
 async function getPosts() {
     let promise = [];
@@ -46,6 +55,7 @@ async function getPosts() {
 /** 
  * @param {number} id
  * @returns {Promise<PostEntity>} 
+ * @throws {MysqlError} error
  */
 async function getPost(id) {
     let promise = new Promise((resolve, reject) => {
@@ -84,6 +94,7 @@ async function deletePost(post) {
 /** 
  * @param {PostEntity} post
  * @returns {Promise<undefined>} - we don't want to return anything in this promise 
+ * @throws {MysqlError} error
  */
 async function updatePost(post) {
     let promise = new Promise((resolve, reject) => {
