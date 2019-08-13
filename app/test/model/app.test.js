@@ -1,4 +1,4 @@
-const postModel = require('../src/model/post');
+const postModel = require('../../src/model/post');
 
 test('add, update and delete post', async () => {
 
