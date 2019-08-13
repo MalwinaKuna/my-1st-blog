@@ -33,7 +33,7 @@ async function insertPost(post) {
 }
 /** 
  * @returns {Promise<PostEntity[]>} 
- * @throws {MysqlError} error
+ * @throws {MysqlError} 
  */
 async function getPosts() {
     let promise = [];
@@ -55,7 +55,7 @@ async function getPosts() {
 /** 
  * @param {number} id
  * @returns {Promise<PostEntity>} 
- * @throws {MysqlError} error
+ * @throws {MysqlError} 
  */
 async function getPost(id) {
     let promise = new Promise((resolve, reject) => {
@@ -94,7 +94,7 @@ async function deletePost(post) {
 /** 
  * @param {PostEntity} post
  * @returns {Promise<undefined>} - we don't want to return anything in this promise 
- * @throws {MysqlError} error
+ * @throws {MysqlError} 
  */
 async function updatePost(post) {
     let promise = new Promise((resolve, reject) => {
