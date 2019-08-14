@@ -1,5 +1,12 @@
 const connection = require('./connection');
 class PostEntity {
+    /**
+     * 
+     * @param {number} id 
+     * @param {string} title 
+     * @param {string} slug 
+     * @param {string} content 
+     */
     constructor(id, title, slug, content) {
         this.id = id;
         this.title = title;
@@ -7,19 +14,27 @@ class PostEntity {
         this.content = content;
     }
 }
+/** 
+ * @param {PostEntity} post
+ * @returns {Promise<undefind>}
+ * @throws {MysqlError}
+ */
 async function insertPost(post) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
             `INSERT INTO posts (title,slug,content) VALUES ('${post.title}','${post.slug}','${post.content}');`,
             (error, results, fields) => {
                 if (error) reject(error);
-                console.log('The solution is ', results);
                 resolve(results.insertId);
             }
         );
     })
     post.id = await promise;
 }
+/** 
+ * @returns {Promise<PostEntity[]>} 
+ * @throws {MysqlError} 
+ */
 async function getPosts() {
     let promise = [];
     promise = new Promise((resolve, reject) => {
@@ -37,13 +52,17 @@ async function getPosts() {
     })
     return promise;
 }
+/** 
+ * @param {number} id
+ * @returns {Promise<PostEntity>} 
+ * @throws {MysqlError} 
+ */
 async function getPost(id) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
             `SELECT * FROM posts WHERE id='${id}';`,
             (error, results, fields) => {
                 if (error) reject(error);
-                console.log('The solution is ', results);
                 let post = new PostEntity(results[0].id, results[0].title, results[0].slug, results[0].content);
                 resolve(post);
             }
@@ -51,16 +70,19 @@ async function getPost(id) {
     })
     return promise;
 }
-async function deletePost(id) {
+/** 
+ * @param {PostEntity} post
+ * @returns {Promise<boolean>}- it depends on if the entity was deleted or not
+ */
+async function deletePost(post) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
-            `DELETE FROM posts WHERE id='${id}';`,
+            `DELETE FROM posts WHERE id='${post.id}';`,
             (error, results, fields) => {
                 if (error) resolve(false);
-                console.log('The solution is ', results);
-                if (results.affectedRows > 0)
+                if (results.affectedRows > 0) {
                     resolve(true);
-                else {
+                } else {
                     resolve(false);
                 }
             }
@@ -69,23 +91,18 @@ async function deletePost(id) {
     })
     return promise;
 }
-
-function deletePosts() {
-    connection.query(
-        `DELETE FROM posts;`,
-        (error, results, fields) => {
-            if (error) throw error;
-            console.log('The solution is ', results);
-        }
-    );
-}
+/** 
+ * @param {PostEntity} post
+ * @returns {Promise<undefined>} - we don't want to return anything in this promise 
+ * @throws {MysqlError} 
+ */
 async function updatePost(post) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
             `UPDATE posts SET title='${post.title}', slug='${post.slug}', content='${post.content}' WHERE id='${post.id}'`,
             (error, results, fields) => {
                 if (error) reject(error);
-                resolve(console.log('The solution is ', results));
+                resolve(undefined);
             }
         );
     })
@@ -96,7 +113,6 @@ module.exports = {
     getPosts,
     getPost,
     deletePost,
-    deletePosts,
     PostEntity,
     updatePost
 }

@@ -1,4 +1,4 @@
-const postModel = require('../src/model/post');
+const postModel = require('../../src/model/post');
 
 test('add, update and delete post', async () => {
 
@@ -20,8 +20,8 @@ test('add, update and delete post', async () => {
     expect(gettedPost2.slug).toBe('slug23');
     expect(gettedPost2.content).toBe('new content');
 
-    expect(await postModel.deletePost(post.id)).toBe(true);
-    expect(await postModel.deletePost(post.id)).toBe(false);
+    expect(await postModel.deletePost(post)).toBe(true);
+    expect(await postModel.deletePost(post)).toBe(false);
 })
 test('add, check and delete posts', async () => {
 
@@ -33,6 +33,8 @@ test('add, check and delete posts', async () => {
     await postModel.insertPost(post2);
     await postModel.insertPost(post3);
 
+    let gettedPosts = await postModel.getPosts();
+
     function comparePost(post1, post2) {
         if (post1.title === post2.title && post1.slug === post2.slug && post1.content === post2.content) {
             return true;
@@ -40,9 +42,7 @@ test('add, check and delete posts', async () => {
             return false;
         }
     }
-    let gettedPosts = await postModel.getPosts();
     let match = 0;
-
     for (let i = 0; i < gettedPosts.length; i++) {
         expect(gettedPosts[i] instanceof postModel.PostEntity).toBeTruthy();
 
@@ -57,9 +57,9 @@ test('add, check and delete posts', async () => {
         }
     }
     expect(match).toEqual(3);
-    await postModel.deletePost(post1.id);
-    await postModel.deletePost(post2.id);
-    await postModel.deletePost(post3.id);
 
- 
+    await postModel.deletePost(post1);
+    await postModel.deletePost(post2);
+    await postModel.deletePost(post3);
 })
+
