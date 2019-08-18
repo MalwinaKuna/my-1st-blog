@@ -1,6 +1,7 @@
 const request = require('sync-request');
+const postModel = require('../src/model/post');
 
-test('check if title is string type', ()=>{
+test('check if title is string type', async ()=>{
     let result = request('POST', 'http://localhost:8080/posts',{
         json: {
             title: '<string>',
@@ -10,9 +11,10 @@ test('check if title is string type', ()=>{
     });
     expect(result.statusCode).toBe(201);
     let payload = JSON.parse(result.body);
-    expect(payload.title).toBe("<string>");
-    expect(payload.slug).toBe("<string>");
-    expect(payload.content).toBe("<string>");
+    expect(typeof payload.id).toBe('number');
+
+    await postModel.deletePost(payload); 
+   
 });
 
 test('check if title is string type', ()=>{
@@ -26,5 +28,5 @@ test('check if title is string type', ()=>{
     expect(result.statusCode).toBe(400);
     let payload = JSON.parse(result.body);
     expect(payload.Errors).toEqual(["title is not a string type","content is not a string type"]);
-   
 });
+
