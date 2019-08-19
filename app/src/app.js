@@ -1,4 +1,4 @@
-const post = require('./model/post');
+const postModel = require('./model/post');
 const express = require('express');
 const connection = require('./model/connection');
 const app = express();
@@ -6,41 +6,35 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
 app.post('/posts', async (req, res) => {
-    let title = req.body.title;
-    let slug = req.body.slug;
-    let content = req.body.content;
+
+    let newPost = new postModel.PostEntity(null, req.body.title, req.body.slug, req.body.content);
 
     const error = [];
-    if (typeof title !== 'string') {
+    if (typeof newPost.title !== 'string') {
         error.push('title is not a string type');
     }
-    if (typeof slug !== 'string') {
+    if (typeof newPost.slug !== 'string') {
         error.push('slug is not a string type');
     }
-    if (typeof content !== 'string') {
+    if (typeof newPost.content !== 'string') {
         error.push('content is not a string type');
+    }
+
+    if (await postModel.isSlugExist(newPost)) {
+
+        error.push('The slug already exists');
     }
     if (error.length > 0) {
         res.status(400);
         res.json({
-            Errors: error
+            errors: error
         });
         return;
     }
-    isSlugUnique = await post.isSlugExist(slug);
-    if (isSlugUnique) {
-        res.status(400);
-        res.json({
-            Error: 'The slug already exists'
-        });
-    }
-    let addPost = new post.PostEntity(null, title, slug, content);
-
     try {
-        await post.insertPost(addPost);
-
+        await postModel.insertPost(newPost);
         res.status(201);
-        res.json(addPost);
+        res.json(newPost);
     } catch (error) {
         console.error(error.toString());
         res.status(500);

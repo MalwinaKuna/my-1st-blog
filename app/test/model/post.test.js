@@ -63,3 +63,12 @@ test('add, check and delete posts', async () => {
     await postModel.deletePost(post3);
 })
 
+test('add post and use isSlugExist function to find out if the slug was unique', async () => {
+
+    let post1 = new postModel.PostEntity(null, 'first', '1ddgdrtffjdgqh1', 'text');
+    await postModel.insertPost(post1);
+
+    expect(await postModel.isSlugExist(post1)).toEqual(true);
+    await postModel.deletePost(post1);
+    expect(await postModel.isSlugExist(post1)).toEqual(false);
+})

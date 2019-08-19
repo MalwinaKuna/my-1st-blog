@@ -80,19 +80,25 @@ async function getPost(id) {
     return promise;
 }
 /** 
- * @param {string} slug
+ * @param {PostEntity} post
  * @returns {Promise<boolean>}- it the slug exist it returns true
+ * @throws {MysqlError}
  */
-async function isSlugExist(slug) {
+async function isSlugExist(post) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
-            `SELECT * FROM posts WHERE slug='${slug}';`,
+            `SELECT * FROM posts WHERE slug='${post.slug}';`,
             (error, results, fields) => {
+                if (error) {
+                    reject(error)
+                    return;
+                }
                 if (results.length === 0) {
                     resolve(false);
                 } else {
                     resolve(true);
                 }
+
             }
         );
     })
