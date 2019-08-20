@@ -16,7 +16,9 @@ app.get('/posts/:id', async (req, res) => {
         }
 
         if (post===null) {
-            res.status(404);
+            res.status(404).json({
+                message: 'post does not exist!'
+            });
             res.end();
             return;
         }

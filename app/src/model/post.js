@@ -83,31 +83,6 @@ async function getPost(id) {
     })
     return promise;
 }
-// /** 
-//  * @param {PostEntity} post
-//  * @returns {Promise<boolean>}- if the  exist it returns true
-//  * @throws {MysqlError}
-//  */
-// async function isIdExist(id) {
-//     let promise = new Promise((resolve, reject) => {
-//         connection.query(
-//             `SELECT * FROM posts WHERE id='${id}';`,
-//             (error, results, fields) => {
-//                 if (error) {
-//                     reject(error)
-//                     return;
-//                 }
-//                 if (results.length > 0) {
-//                     resolve(true);
-//                 } else {
-//                     resolve(false);
-//                 }
-
-//             }
-//         );
-//     })
-//     return promise;
-// }
 /** 
  * @param {PostEntity} post
  * @returns {Promise<boolean>}- it the slug exist it returns true
