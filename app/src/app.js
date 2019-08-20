@@ -5,6 +5,25 @@ const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
+app.get('/posts/:id', async (req, res) => {
+
+    try {
+        let post = await postModel.getPost(req.params.id);
+
+        if (post===null) {
+            res.status(404);
+            res.end();
+            return;
+        }
+        res.status(201).json(post);
+
+    } catch (error) {
+        console.error(error.toString());
+        res.status(500);
+        res.end();
+    }
+});
+
 app.post('/posts', async (req, res) => {
 
     let newPost = new postModel.PostEntity(null, req.body.title, req.body.slug, req.body.content);
@@ -41,5 +60,8 @@ app.post('/posts', async (req, res) => {
         res.end();
     }
 });
+
+
+
 
 app.listen(8080, () => console.log('Listening on 8080'));

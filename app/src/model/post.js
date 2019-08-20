@@ -60,7 +60,7 @@ async function getPosts() {
 }
 /** 
  * @param {number} id
- * @returns {Promise<PostEntity>} 
+ * @returns {Promise<PostEntity|null}>} 
  * @throws {MysqlError} 
  */
 async function getPost(id) {
@@ -72,8 +72,37 @@ async function getPost(id) {
                     reject(error);
                     return;
                 }
-                let post = new PostEntity(results[0].id, results[0].title, results[0].slug, results[0].content);
-                resolve(post);
+                if (results.length > 0) {
+                    let post = new PostEntity(results[0].id, results[0].title, results[0].slug, results[0].content);
+                    resolve(post);
+                } else {
+                    resolve(null);
+                }
+            }
+        );
+    })
+    return promise;
+}
+/** 
+ * @param {PostEntity} post
+ * @returns {Promise<boolean>}- it the slug exist it returns true
+ * @throws {MysqlError}
+ */
+async function isIdExist(id) {
+    let promise = new Promise((resolve, reject) => {
+        connection.query(
+            `SELECT * FROM posts WHERE id='${id}';`,
+            (error, results, fields) => {
+                if (error) {
+                    reject(error)
+                    return;
+                }
+                if (results.length > 0) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+
             }
         );
     })
@@ -151,6 +180,7 @@ module.exports = {
     insertPost,
     getPosts,
     isSlugExist,
+    isIdExist,
     getPost,
     deletePost,
     PostEntity,
