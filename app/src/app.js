@@ -9,13 +9,12 @@ app.get('/posts/:id', async (req, res) => {
 
     try {
         let post = await postModel.getPost(req.params.id);
-        if(isNaN(req.params.id)) {
+        if (isNaN(req.params.id)) {
             res.status(404).json({
                 message: 'id must be a number'
             });
         }
-
-        if (post===null) {
+        if (post === null) {
             res.status(404).json({
                 message: 'post does not exist!'
             });
@@ -23,7 +22,6 @@ app.get('/posts/:id', async (req, res) => {
             return;
         }
         res.status(201).json(post);
-
     } catch (error) {
         console.error(error.toString());
         res.status(500);

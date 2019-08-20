@@ -155,7 +155,6 @@ module.exports = {
     insertPost,
     getPosts,
     isSlugExist,
-    // isIdExist,
     getPost,
     deletePost,
     PostEntity,
