@@ -9,6 +9,11 @@ app.get('/posts/:id', async (req, res) => {
 
     try {
         let post = await postModel.getPost(req.params.id);
+        if(isNaN(req.params.id)) {
+            res.status(404).json({
+                message: 'id must be a number'
+            });
+        }
 
         if (post===null) {
             res.status(404);
