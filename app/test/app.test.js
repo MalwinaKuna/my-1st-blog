@@ -1,7 +1,6 @@
 const request = require('sync-request');
 const postModel = require('../src/model/post');
 
-
 test('check if post was added', async () => {
 
     let result = request('POST', 'http://localhost:8080/posts', {
@@ -40,7 +39,7 @@ test('check are the error and status code rigth when the slug is not unique', as
         }
     });
     let payload = JSON.parse(result.body);
-    
+
     let result1 = request('POST', 'http://localhost:8080/posts', {
         json: {
             title: '1',
@@ -53,4 +52,23 @@ test('check are the error and status code rigth when the slug is not unique', as
     let payload1 = JSON.parse(result1.body);
     expect(payload1.errors).toEqual(['The slug already exists']);
     await postModel.deletePost(payload);
+})
+
+test('when post id is string', async () => {
+    let result = request('GET', `http://localhost:8080/posts/<string>`);
+    expect(result.statusCode).toBe(400);
+    let payload = JSON.parse(result.body);
+    expect(await payload.message).toEqual('id must be a number');
+})
+
+test('when id exists', async () => {
+    let newPost = new postModel.PostEntity(null, 'title', 'slug', 'content');
+    await postModel.insertPost(newPost);
+    
+    let result = request('GET', `http://localhost:8080/posts/${newPost.id}`);
+    expect(await result.statusCode).toBe(200);
+    let payload = JSON.parse(result.body);
+    expect(await payload.id).toEqual(newPost.id);
+
+    await postModel.deletePost(newPost);
 })

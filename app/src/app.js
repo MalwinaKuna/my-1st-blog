@@ -9,6 +9,30 @@ app.get('/posts', async(req, res)=>{
             let posts = await postModel.getPosts();
             res.json(posts);
         });
+app.get('/posts/:id', async (req, res) => {
+
+    try {
+        if (isNaN(req.params.id)) {
+            res.status(400).json({
+                message: 'id must be a number'
+            });
+
+            return;
+        }
+        let post = await postModel.getPost(req.params.id);
+        if (post === null) {
+            res.status(404);
+            res.end();
+            return;
+        }
+        res.status(200).json(post);
+    } catch (error) {
+        console.error(error.toString());
+        res.status(500);
+        res.end();
+        return;
+    }
+});
 
 app.post('/posts', async (req, res) => {
 
@@ -44,7 +68,11 @@ app.post('/posts', async (req, res) => {
         console.error(error.toString());
         res.status(500);
         res.end();
+        return;
     }
 });
+
+
+
 
 app.listen(8080, () => console.log('Listening on 8080'));
