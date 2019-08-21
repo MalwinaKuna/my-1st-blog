@@ -60,7 +60,7 @@ async function getPosts() {
 }
 /** 
  * @param {number} id
- * @returns {Promise<PostEntity>} 
+ * @returns {Promise<PostEntity|null} - null if results are [] 
  * @throws {MysqlError} 
  */
 async function getPost(id) {
@@ -72,8 +72,12 @@ async function getPost(id) {
                     reject(error);
                     return;
                 }
-                let post = new PostEntity(results[0].id, results[0].title, results[0].slug, results[0].content);
-                resolve(post);
+                if (results.length > 0) {
+                    let post = new PostEntity(results[0].id, results[0].title, results[0].slug, results[0].content);
+                    resolve(post);
+                } else {
+                    resolve(null);
+                }
             }
         );
     })
