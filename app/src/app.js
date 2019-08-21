@@ -12,18 +12,21 @@ app.get('/posts/:id', async (req, res) => {
             res.status(400).json({
                 message: 'id must be a number'
             });
+
             return;
         }
         let post = await postModel.getPost(req.params.id);
         if (post === null) {
             res.status(404);
             res.end();
+            return;
         }
         res.status(200).json(post);
     } catch (error) {
         console.error(error.toString());
         res.status(500);
         res.end();
+        return;
     }
 });
 
@@ -61,6 +64,7 @@ app.post('/posts', async (req, res) => {
         console.error(error.toString());
         res.status(500);
         res.end();
+        return;
     }
 });
 
