@@ -54,16 +54,21 @@ test('check are the error and status code rigth when the slug is not unique', as
     await postModel.deletePost(payload);
 })
 
-test('when post id is null', async () => {
-    let result = request('GET', 'http://localhost:8080/posts/666');
-    expect(result.statusCode).toBe(404);
+test('when post id is string', async () => {
+    let result = request('GET', `http://localhost:8080/posts/<string>`);
+    expect(result.statusCode).toBe(400);
     let payload = JSON.parse(result.body);
-    expect(await payload.message).toEqual('post does not exist!');
+    expect(await payload.message).toEqual('id must be a number');
 })
 
 test('when id exists', async () => {
-    let result = request('GET', 'http://localhost:8080/posts/496');
-    expect(await result.statusCode).toBe(201);
+    let newPost = new postModel.PostEntity(null, 'title', 'slug', 'content');
+    await postModel.insertPost(newPost);
+    
+    let result = request('GET', `http://localhost:8080/posts/${newPost.id}`);
+    expect(await result.statusCode).toBe(200);
     let payload = JSON.parse(result.body);
-    expect(await payload.id).toEqual(496);
+    expect(await payload.id).toEqual(newPost.id);
+
+    await postModel.deletePost(newPost);
 })

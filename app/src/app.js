@@ -8,20 +8,18 @@ app.use(bodyParser.json());
 app.get('/posts/:id', async (req, res) => {
 
     try {
-        let post = await postModel.getPost(req.params.id);
         if (isNaN(req.params.id)) {
-            res.status(404).json({
+            res.status(400).json({
                 message: 'id must be a number'
             });
-        }
-        if (post === null) {
-            res.status(404).json({
-                message: 'post does not exist!'
-            });
-            res.end();
             return;
         }
-        res.status(201).json(post);
+        let post = await postModel.getPost(req.params.id);
+        if (post === null) {
+            res.status(404);
+            res.end();
+        }
+        res.status(200).json(post);
     } catch (error) {
         console.error(error.toString());
         res.status(500);
