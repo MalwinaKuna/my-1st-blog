@@ -72,3 +72,14 @@ test('add post and use isSlugExist function to find out if the slug was unique',
     await postModel.deletePost(post1);
     expect(await postModel.isSlugExist(post1)).toEqual(false);
 })
+
+test('check getting all posts', async () => {
+    let newPost1 = new postModel.PostEntity(null, 'first title', 'slug-1', 'content 1');
+    await postModel.insertPost(newPost1);
+
+    let allPosts = [];
+    allPosts = await postModel.getPosts();
+    expect(await allPosts).toContainEqual(newPost1);
+
+    await postModel.deletePost(newPost1);
+})

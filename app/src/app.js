@@ -5,6 +5,10 @@ const app = express();
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());
 
+app.get('/posts', async(req, res)=>{
+            let posts = await postModel.getPosts();
+            res.json(posts);
+        });
 app.get('/posts/:id', async (req, res) => {
 
     try {
