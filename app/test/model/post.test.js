@@ -75,31 +75,16 @@ test('add post and use isSlugExist function to find out if the slug was unique',
 
 test('check getting all posts', async () => {
     let newPost1 = new postModel.PostEntity(null, 'first title', 'slug-1', 'content 1');
-    let newPost2 = new postModel.PostEntity(null, 'second title', 'slug-2', 'content 2');
-    let newPost3 = new postModel.PostEntity(null, 'third title', 'slug-3', 'content 3');
-
     await postModel.insertPost(newPost1);
-    await postModel.insertPost(newPost2);
-    await postModel.insertPost(newPost3);
 
-    expect(await postModel.getPosts()).toEqual([{
-        "content": `${newPost1.content}`,
-        "id": parseInt(`${newPost1.id}`),
-        "slug": `${newPost1.slug}`,
-        "title": `${newPost1.title}`
-    }, {
-        "content": `${newPost2.content}`,
-        "id": parseInt(`${newPost2.id}`),
-        "slug": `${newPost2.slug}`,
-        "title": `${newPost2.title}`
-    }, {
-        "content": `${newPost3.content}`,
-        "id": parseInt(`${newPost3.id}`),
-        "slug": `${newPost3.slug}`,
-        "title": `${newPost3.title}`
-    }]);
+    let allPosts = [];
+    allPosts = await postModel.getPosts();
+
+    let amount = 0;
+    for (let i = 0; i < allPosts.length; i++) {
+        amount = +i;
+    }
+    expect(await allPosts[amount]).toEqual(newPost1);
 
     await postModel.deletePost(newPost1);
-    await postModel.deletePost(newPost2);
-    await postModel.deletePost(newPost3);
 })
