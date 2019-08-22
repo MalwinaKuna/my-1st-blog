@@ -79,12 +79,7 @@ test('check getting all posts', async () => {
 
     let allPosts = [];
     allPosts = await postModel.getPosts();
-
-    let amount = 0;
-    for (let i = 0; i < allPosts.length; i++) {
-        amount = +i;
-    }
-    expect(await allPosts[amount]).toEqual(newPost1);
+    expect(await allPosts).toContainEqual(newPost1);
 
     await postModel.deletePost(newPost1);
 })
