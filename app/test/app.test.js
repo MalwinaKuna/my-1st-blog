@@ -64,11 +64,22 @@ test('when post id is string', async () => {
 test('when id exists', async () => {
     let newPost = new postModel.PostEntity(null, 'title', 'slug', 'content');
     await postModel.insertPost(newPost);
-    
+
     let result = request('GET', `http://localhost:8080/posts/${newPost.id}`);
     expect(await result.statusCode).toBe(200);
     let payload = JSON.parse(result.body);
     expect(await payload.id).toEqual(newPost.id);
+
+    let resultUpdate = request('PUT', `http://localhost:8080/posts/${newPost.id}`, {
+        json: {
+            title: '1',
+            slug: '2',
+            content: '3'
+        }
+    });
+    expect(await result.statusCode).toBe(200);
+    let payload1 = JSON.parse(resultUpdate.body);
+    expect(payload1.slug).toEqual('2');
 
     await postModel.deletePost(newPost);
 })
