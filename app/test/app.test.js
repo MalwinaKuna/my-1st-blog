@@ -61,7 +61,7 @@ test('when post id is string', async () => {
     expect(await payload.message).toEqual('id must be a number');
 })
 
-test('when id exists', async () => {
+test('when id exists ', async () => {
     let newPost = new postModel.PostEntity(null, 'title', 'slug', 'content');
     await postModel.insertPost(newPost);
 
@@ -82,4 +82,12 @@ test('when id exists', async () => {
     expect(payload1.slug).toEqual('2');
 
     await postModel.deletePost(newPost);
+})
+
+test('post deleting', async () => {
+    let newPost = new postModel.PostEntity(null, 'title', 'slug', 'content');
+    await postModel.insertPost(newPost);
+
+    let result = request('DELETE', `http://localhost:8080/posts/${newPost.id}`);
+    expect(await result.statusCode).toBe(204);
 })
