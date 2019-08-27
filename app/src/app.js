@@ -3,7 +3,41 @@ const express = require('express');
 const connection = require('./model/connection');
 const app = express();
 const bodyParser = require('body-parser');
+const postValidation = require('./validation/post');
 app.use(bodyParser.json());
+
+
+app.put('/posts/:id', async (req, res) => {
+
+        if (isNaN(req.params.id)) {
+            res.status(400).json({
+                message: 'id must be a number'
+            });
+            return;
+        }
+        let postById = await postModel.getPost(req.params.id)
+        if (postById === null) {
+            res.status(404);
+            res.end();
+            return;
+        }
+        postById.title = await req.body.title;
+        postById.slug = await req.body.slug;
+        postById.content = await req.body.content;
+        
+        errorsArray = await postValidation(postById);
+        if (errorsArray.length > 0) {
+            res.status(400);
+            res.json({
+                errors: errorsArray
+            });
+            return;
+        }
+        await postModel.updatePost(postById);
+        res.status(200).json(await postById);
+        return;
+    
+});
 
 app.get('/posts', async(req, res)=>{
             let posts = await postModel.getPosts();
