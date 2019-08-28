@@ -44,7 +44,6 @@ app.put('/posts/:id', async (req, res) => {
         postById.slug = await req.body.slug;
         postById.content = await req.body.content;
 
-
         errorsArray = await postValidation.validatePost(postById);
         if (errorsArray.length > 0) {
             res.status(400);
@@ -55,7 +54,10 @@ app.put('/posts/:id', async (req, res) => {
         }
         await postModel.updatePost(postById);
         res.status(200).json(await postById);
-        return;eb22af094f6f76f6b930cc41f113797cc
+
+        return;
+
+
 });
 
 app.get('/posts', async(req, res)=>{

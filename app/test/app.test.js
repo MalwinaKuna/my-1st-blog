@@ -15,6 +15,7 @@ test('check if post was added', async () => {
     await postModel.deletePost(payload);
 });
 
+
 test('check if title is string type', () => {
     let result = request('POST', 'http://localhost:8080/posts', {
         json: {
@@ -70,6 +71,7 @@ test('when id exists', async () => {
 test('test status when post is correctly updated', async () => {
     let newPost = new postModel.PostEntity(null, 'test title', 'slug test ', 'test content');
     await postModel.insertPost(newPost);
+
     let result = request('PUT', `http://localhost:8080/posts/${newPost.id}`, {
         json: {
             title: '1test1test1test1test1test',
@@ -77,13 +79,13 @@ test('test status when post is correctly updated', async () => {
             content: '3'
         }});
     expect(await result.statusCode).toBe(200);
+
     await postModel.deletePost(newPost);
 })
 
 test('test status when title post is too short', async () => {
     let newPost = new postModel.PostEntity(null, 'test title', 'slug test ', 'test content');
     await postModel.insertPost(newPost);
-
     let result = request('PUT', `http://localhost:8080/posts/${newPost.id}`, {
         json: {
             title: '1t',
@@ -98,6 +100,7 @@ test('test status when title post is too short', async () => {
 test('test status when slug is not unique', async () => {
     let newPost = new postModel.PostEntity(null, 'test title', 'slug test ', 'test content');
     await postModel.insertPost(newPost);
+
     let result = request('PUT', `http://localhost:8080/posts/${newPost.id}`, {
         json: {
             title: '1testetesttest',
