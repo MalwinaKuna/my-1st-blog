@@ -72,25 +72,11 @@ app.post('/posts', async (req, res) => {
 
     let newPost = new postModel.PostEntity(null, req.body.title, req.body.slug, req.body.content);
 
-    const error = [];
-    if (typeof newPost.title !== 'string') {
-        error.push('title is not a string type');
-    }
-    if (typeof newPost.slug !== 'string') {
-        error.push('slug is not a string type');
-    }
-    if (typeof newPost.content !== 'string') {
-        error.push('content is not a string type');
-    }
-
-    if (await postModel.isSlugExist(newPost)) {
-
-        error.push('The slug already exists');
-    }
-    if (error.length > 0) {
+    let errorsArray = await postValidation.validatePost(newPost);
+    if (errorsArray.length > 0) {
         res.status(400);
         res.json({
-            errors: error
+            errors: errorsArray
         });
         return;
     }
