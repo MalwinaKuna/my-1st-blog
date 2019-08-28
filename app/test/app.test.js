@@ -72,3 +72,49 @@ test('when id exists', async () => {
 
     await postModel.deletePost(newPost);
 })
+
+test('test status when post is correctly updated', async () => {
+    let newPost = new postModel.PostEntity(null, 'test title', 'slug test ', 'test content');
+    await postModel.insertPost(newPost);
+    
+    let result = request('PUT', `http://localhost:8080/posts/${newPost.id}`, {
+        json: {
+            title: '1test1test1test1test1test',
+            slug: 'slug-slug-slug-slug',
+            content: '3'
+        }});
+    expect(await result.statusCode).toBe(200);
+    
+    await postModel.deletePost(newPost);
+})
+
+test('test status when title post is too short', async () => {
+    let newPost = new postModel.PostEntity(null, 'test title', 'slug test ', 'test content');
+    await postModel.insertPost(newPost);
+    
+    let result = request('PUT', `http://localhost:8080/posts/${newPost.id}`, {
+        json: {
+            title: '1t',
+            slug: 'slug-slug-slug-slug',
+            content: '3'
+        }});
+    expect(await result.statusCode).toBe(400);
+    
+    await postModel.deletePost(newPost);
+})
+
+test('test status when slug is not unique', async () => {
+    let newPost = new postModel.PostEntity(null, 'test title', 'slug test ', 'test content');
+    await postModel.insertPost(newPost);
+    
+    let result = request('PUT', `http://localhost:8080/posts/${newPost.id}`, {
+        json: {
+            title: '1testetesttest',
+            slug: 'slug test',
+            content: '3'
+        }});
+    expect(await result.statusCode).toBe(400);
+    
+    await postModel.deletePost(newPost);
+})
+
