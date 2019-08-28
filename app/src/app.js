@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const postValidation = require('./validation/post');
 app.use(bodyParser.json());
 
-
 app.put('/posts/:id', async (req, res) => {
 
         if (isNaN(req.params.id)) {
