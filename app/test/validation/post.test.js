@@ -2,19 +2,97 @@ const request = require('sync-request');
 const postModel = require('../../src/model/post');
 const validation = require('../../src/validation/post');
 
-test('check the validation: title is not a string type', async()=> {
-    let newPost = new postModel.PostEntity(null, 'title', 'slug', 'content');
-    await postModel.insertPost(newPost);
+test('check the validation: no errors', async()=> {
+    let post = new postModel.PostEntity(null, 'titletitletitle', 'slug', 'content');
 
-    let resultUpdate = request('PUT', `http://localhost:8080/posts/${newPost.id}`, {
-        json: {
-            title: 2,
-            slug: '2',
-            content: '3'
-        }
-    });
-    let payload1 = JSON.parse(resultUpdate.body);
-    expect(payload1.errors).toContainEqual('title is not a string type');
-
-    await postModel.deletePost(newPost);
+   let result = await validation.validatePost(post);
+   expect(result).toEqual([]);
 })
+
+test('check the validation: title is not a string type', async()=> {
+    let post = new postModel.PostEntity(null, 2, 'slug', 'content');
+
+   let result = await validation.validatePost(post);
+   expect(result).toContain('title is not a string type');
+})
+
+test('check the validation: slug is not a string type', async()=> {
+    let post = new postModel.PostEntity(null, 'titltitletitlee', 999, 'content');
+
+   let result = await validation.validatePost(post);
+   expect(result).toContain('slug is not a string type');
+})
+
+test('check the validation: content is not a string type', async()=> {
+    let post = new postModel.PostEntity(null, 'titletitletitle', 'slug', 2);
+
+   let result = await validation.validatePost(post);
+   expect(result).toContain('content is not a string type');
+})
+test('check the validation: slug already exists', async()=> {
+    let post = new postModel.PostEntity(null, 'first ttitletitleest title', 'test slug', 'test content 1');
+    postModel.insertPost(post);
+
+    let testPost = new postModel.PostEntity(null, 'secondtitletitle test title', 'test slug', 'test content 2');
+
+   let result = await validation.validatePost(testPost);
+   expect(result).toContain('The slug already exists');
+
+   await postModel.deletePost(post);
+   
+})
+
+test('check the validation: title is too short', async()=> {
+    let post = new postModel.PostEntity(null, 'short', 'slug', 'content');
+
+   let result = await validation.validatePost(post);
+   expect(result).toContain('title must be at least 10 characters long');
+})
+
+
+
+//ilosc znakow w tytule!!
+//krotkie testy
+//slug, content is not a string type
+
+
+// test('check the validation: title is not a string type', async()=> {
+//     let post = new postModel.PostEntity(null, 'some title looong', 'slug', 'content');
+
+//    let result = await validation.validatePost(post);
+//    expect(result).toContain('title is not a string type');
+// })
+
+// test('check the validation: title is too short', async()=> {
+//     let post = new postModel.PostEntity(null, 'to short', 'slug', 'content');
+
+//    let result = await validation.validatePost(post);
+//    expect(result).toContain('title must be at least 10 characterc long');
+// })
+
+// test('check the validation: slug is not a string type', async()=> {
+//     let post = new postModel.PostEntity(null, 'titletitletitle', 999, 'content');
+
+//    let result = await validation.validatePost(post);
+//    expect(result).toContain('slug is not a string type');
+// })
+
+// test('check the validation: content is not a string type', async()=> {
+//     let post = new postModel.PostEntity(null, 'titletitletitletitle', 'slug', 2);
+
+//    let result = await validation.validatePost(post);
+//    expect(result).toContain('content is not a string type');
+// })
+
+// test('check the validation: slug already exists', async()=> {
+//     let post = new postModel.PostEntity(null, 'first test titletitletitletitle', 'test slug', 'test content 1');
+//     postModel.insertPost(post);
+
+//     let testPost = new postModel.PostEntity(null, 'second test titletitletitle', 'test slug', 'test content 2');
+
+//    let result = await validation.validatePost(testPost);
+//    expect(result).toContain('The slug already exists');
+
+//    await postModel.deletePost(post);
+// })
+

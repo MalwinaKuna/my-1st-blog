@@ -25,7 +25,7 @@ app.put('/posts/:id', async (req, res) => {
         postById.slug = await req.body.slug;
         postById.content = await req.body.content;
         
-        errorsArray = await postValidation(postById);
+        errorsArray = await postValidation.validatePost(postById);
         if (errorsArray.length > 0) {
             res.status(400);
             res.json({

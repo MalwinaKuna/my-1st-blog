@@ -10,6 +10,9 @@ const validatePost =async function (post) {
     if (typeof post.title !== 'string') {
         error.push('title is not a string type');
     }
+    if (post.title.length < 10) {
+        error.push('title must be at least 10 characters long');
+    }
     if (typeof post.slug !== 'string') {
         error.push('slug is not a string type');
     }
@@ -23,4 +26,6 @@ const validatePost =async function (post) {
     return error;
 };
 
-module.exports = validatePost;
+module.exports = {
+    validatePost
+};
