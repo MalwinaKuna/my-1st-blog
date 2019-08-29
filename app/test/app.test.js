@@ -112,7 +112,7 @@ test('test status when slug is not unique', async () => {
     await postModel.deletePost(newPost);
 })
 
-test('post deleting, when id is not a string type', async () => {
+test('post deleting, when id is a string type', async () => {
     let newPost = new postModel.PostEntity(null, 'title', '99999999', 'content');
     await postModel.insertPost(newPost);
 
