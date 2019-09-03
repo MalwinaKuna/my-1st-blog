@@ -15,13 +15,23 @@ test('check if post was added', async () => {
     await postModel.deletePost(payload);
 });
 
-
 test('check if title is string type', () => {
     let result = request('POST', 'http://localhost:8080/posts', {
         json: {
             title: 2,
             slug: '<string>',
             content: 3,
+        }
+    });
+    expect(result.statusCode).toBe(400);
+});
+
+test('slug has forbidden signs', () => {
+    let result = request('POST', 'http://localhost:8080/posts', {
+        json: {
+            title: 'wwwwwwwww',
+            slug: 'ą',
+            content: '3',
         }
     });
     expect(result.statusCode).toBe(400);
