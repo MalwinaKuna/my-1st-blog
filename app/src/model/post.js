@@ -1,11 +1,12 @@
 const connection = require('./connection');
+
 class PostEntity {
     /**
-     * 
-     * @param {number} id 
-     * @param {string} title 
-     * @param {string} slug 
-     * @param {string} content 
+     *
+     * @param {number} id
+     * @param {string} title
+     * @param {string} slug
+     * @param {string} content
      */
     constructor(id, title, slug, content) {
         this.id = id;
@@ -14,7 +15,7 @@ class PostEntity {
         this.content = content;
     }
 }
-/** 
+/**
  * @param {PostEntity} post
  * @returns {Promise<undefind>}
  * @throws {MysqlError}
@@ -34,9 +35,9 @@ async function insertPost(post) {
     })
     post.id = await promise;
 }
-/** 
- * @returns {Promise<PostEntity[]>} 
- * @throws {MysqlError} 
+/**
+ * @returns {Promise<PostEntity[]>}
+ * @throws {MysqlError}
  */
 async function getPosts() {
     let promise = [];
@@ -58,10 +59,10 @@ async function getPosts() {
     })
     return promise;
 }
-/** 
+/**
  * @param {number} id
- * @returns {Promise<PostEntity|null} - null if results are [] 
- * @throws {MysqlError} 
+ * @returns {Promise<PostEntity|null} - null if results are []
+ * @throws {MysqlError}
  */
 async function getPost(id) {
     let promise = new Promise((resolve, reject) => {
@@ -83,7 +84,7 @@ async function getPost(id) {
     })
     return promise;
 }
-/** 
+/**
  * @param {PostEntity} post
  * @returns {Promise<boolean>}- it the slug exist it returns true
  * @throws {MysqlError}
@@ -108,7 +109,7 @@ async function isSlugExist(post) {
     })
     return promise;
 }
-/** 
+/**
  * @param {PostEntity} post
  * @returns {Promise<boolean>}- it depends on if the entity was deleted or not
  */
@@ -131,10 +132,10 @@ async function deletePost(post) {
     })
     return promise;
 }
-/** 
+/**
  * @param {PostEntity} post
- * @returns {Promise<undefined>} - we don't want to return anything in this promise 
- * @throws {MysqlError} 
+ * @returns {Promise<undefined>} - we don't want to return anything in this promise
+ * @throws {MysqlError}
  */
 async function updatePost(post) {
     let promise = new Promise((resolve, reject) => {

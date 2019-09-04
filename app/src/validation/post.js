@@ -4,7 +4,7 @@ const postModel = require('../model/post');
  * @param {PostEntity} post
  * @returns {string[]}
  */
-const validatePost =async function (post) {
+const validatePost = async function (post) {
     const error = [];
 
     if (typeof post.title !== 'string') {
@@ -19,7 +19,7 @@ const validatePost =async function (post) {
     if (typeof post.content !== 'string') {
         error.push('content is not a string type');
     }
-    if ( await postModel.isSlugExist(post)) {
+    if (await postModel.isSlugExist(post)) {
         error.push('The slug already exists');
     }
     try {
@@ -30,8 +30,8 @@ const validatePost =async function (post) {
     return error;
 };
 /**
- * @param {string} slug 
- * @returns {boolean} 
+ * @param {string} slug
+ * @returns {boolean}
  * @throws {Error}
  */
 function hasForbiddenSigns(slug) {
