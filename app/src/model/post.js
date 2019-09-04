@@ -1,4 +1,5 @@
 const connection = require('./connection');
+
 class PostEntity {
     /**
      * 

@@ -2,7 +2,6 @@ const request = require('sync-request');
 const postModel = require('../src/model/post');
 
 test('check if post was added', async () => {
-
     let result = request('POST', 'http://localhost:8080/posts', {
         json: {
             title: '<string>911',
@@ -54,7 +53,6 @@ test('check if the status code is right when the slug is not unique', async () =
             content: '3'
         }
     });
-
     expect(result1.statusCode).toBe(400);
     await postModel.deletePost(payload);
 })
@@ -87,7 +85,8 @@ test('test status when post is correctly updated', async () => {
             title: '1test1test1test1test1test',
             slug: 'slug-slug-slug-slug',
             content: '3'
-        }});
+        }
+    });
     expect(await result.statusCode).toBe(200);
 
     await postModel.deletePost(newPost);
@@ -101,7 +100,8 @@ test('test status when title post is too short', async () => {
             title: '1t',
             slug: 'slug-slug-slug-slug',
             content: '3'
-        }});
+        }
+    });
     expect(await result.statusCode).toBe(400);
 
     await postModel.deletePost(newPost);
@@ -116,7 +116,8 @@ test('test status when slug is not unique', async () => {
             title: '1testetesttest',
             slug: 'slug test',
             content: '3'
-        }});
+        }
+    });
     expect(await result.statusCode).toBe(400);
 
     await postModel.deletePost(newPost);
