@@ -1,0 +1,10 @@
+FROM node:10.15.2
+WORKDIR /app
+COPY ./app /app
+EXPOSE 8080
+CMD ["node", "src/app.js"]
+ENV MYSQL_HOST="localhost"
+ENV MYSQL_PORT="3306"
+ENV MYSQL_PASSWORD=""
+ENV MYSQL_USER=""
+ENV MYSQL_DATABASE=""
