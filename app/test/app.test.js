@@ -1,5 +1,6 @@
 const request = require('sync-request');
 const postModel = require('../src/model/post');
+const userModel = require('../src/model/accounts');
 
 test('check if post was added', async () => {
     let result = request('POST', 'http://localhost:8080/posts', {
@@ -148,4 +149,16 @@ test('post deleting', async () => {
     let result = request('DELETE', `http://localhost:8080/posts/${newPost.id}`);
     expect(await result.statusCode).toBe(204);
     await postModel.deletePost(newPost);
+})
+
+test ('add user', async ()=>{
+    let result = request ('POST', `http://localhost:8080/register`, {
+        json: {
+            username: 'user99999',
+            password: 'somepass999'
+        }
+    });
+    expect(result.statusCode).toBe(201);
+    let payload = JSON.parse(result.body);
+    await userModel.deleteUser(payload);
 })
