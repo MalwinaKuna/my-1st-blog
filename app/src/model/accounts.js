@@ -51,7 +51,7 @@ async function getUsers() {
                 }
                 let users = [];
                 for (let i = 0; i < results.length; i++) {
-                    users.push(new PostEntity(results[i].id, results[i].username, results[i].password)); //?
+                    users.push(new UserEntity(results[i].id, results[i].username, results[i].password)); //?
                 }
                 resolve(users);
             }
@@ -60,8 +60,33 @@ async function getUsers() {
     return promise;
 }
 
+/**
+ * @param {UserEntity} post
+ * @returns {Promise<boolean>}- it depends on if the entity was deleted or not
+ */
+async function deleteUser(accounts) {
+    let promise = new Promise((resolve, reject) => {
+        connection.query(
+            `DELETE FROM users WHERE id='${accounts.id}';`,
+            (error, results, fields) => {
+                if (error) resolve(false);
+                if (results.affectedRows > 0) {
+                    resolve(true);
+                    return;
+                } else {
+                    resolve(false);
+                    return;
+                }
+            }
+        );
+
+    })
+    return promise;
+}
+
 module.exports = {
     UserEntity,
     insertUser,
-    getUsers
+    getUsers,
+    deleteUser
 }
