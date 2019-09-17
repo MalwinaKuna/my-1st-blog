@@ -31,7 +31,33 @@ async function insertUser(accounts) {
     accounts.id = await promise;
 }
 
+/**
+ * @returns {Promise<PostEntity[]>}
+ * @throws {MysqlError}
+ */
+async function getUsers() {
+    let promise = [];
+    promise = new Promise((resolve, reject) => {
+        connection.query(
+            `SELECT * FROM users;`,
+            (error, results, fields) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                let users = [];
+                for (let i = 0; i < results.length; i++) {
+                    users.push(new PostEntity(results[i].id, results[i].title, results[i].slug, results[i].content)); //?
+                }
+                resolve(users);
+            }
+        );
+    })
+    return promise;
+}
+
 module.exports = {
     UserEntity,
-    insertUser
+    insertUser,
+    getUsers
 }

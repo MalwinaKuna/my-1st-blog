@@ -6,6 +6,12 @@ const postValidation = require('./validation/post');
 const accounts = require ('./model/accounts');
 app.use(bodyParser.json());
 
+
+app.get('/posts', async (req, res) => {
+    let users = await accounts.getUsers();
+    res.json(users);
+});
+
 app.post('/register', async (req, res) => {
 
     let newUser = new accounts.UserEntity(null, req.body.username, req.body.password);
