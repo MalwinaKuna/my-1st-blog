@@ -14,10 +14,14 @@ class UserEntity {
         this.password = password;
     }
 }
-
+/**
+ * @param {PostEntity} post
+ * @returns {Promise<undefind>}
+ * @throws {MysqlError}
+ */
 async function insertUser(accounts) {
     let promise = new Promise((resolve, reject) => {
-        connection.quer(
+        connection.query(
             `INSERT INTO users (username, password) VALUES ('${accounts.username}', '${accounts.password}');`,
             (error, results, fields) => {
                 if (error) {
