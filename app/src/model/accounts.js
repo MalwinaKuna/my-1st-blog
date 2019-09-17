@@ -51,7 +51,7 @@ async function getUsers() {
                 }
                 let users = [];
                 for (let i = 0; i < results.length; i++) {
-                    users.push(new PostEntity(results[i].id, results[i].title, results[i].slug, results[i].content)); //?
+                    users.push(new PostEntity(results[i].id, results[i].username, results[i].password)); //?
                 }
                 resolve(users);
             }
