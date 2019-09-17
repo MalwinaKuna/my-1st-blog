@@ -7,7 +7,7 @@ const accounts = require ('./model/accounts');
 app.use(bodyParser.json());
 
 
-app.get('/posts', async (req, res) => {
+app.get('/register', async (req, res) => {
     let users = await accounts.getUsers();
     res.json(users);
 });
