@@ -3,7 +3,24 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const postValidation = require('./validation/post');
+const accounts = require ('./model/accounts');
 app.use(bodyParser.json());
+
+app.post('/register', async (req, res) => {
+
+    let newUser = new accounts.UserEntity(null, req.body.username, req.body.password);
+
+    try {
+        await accounts.insertUser(newUser);
+        res.status(201);
+        res.json(newUser)
+    } catch (error) {
+        console.error(error.toString());
+        res.status(500);
+        res.end();
+        return;
+    }
+});
 
 app.delete('/posts/:id', async (req, res) => {
 
