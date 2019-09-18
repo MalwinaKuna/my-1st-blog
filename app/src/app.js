@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const postValidation = require('./validation/post');
 const accounts = require ('./model/accounts');
 const password = require ('./security/password');
+const passValidation = require ('./validation/passwordValidation');
 app.use(bodyParser.json());
 
 app.get('/register', async (req, res) => {
@@ -13,10 +14,19 @@ app.get('/register', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    let hashedPass = password.hashPassword(req.body.password);
-    let newUser = new accounts.UserEntity(null, req.body.username, hashedPass);
+    let newUser = new accounts.UserEntity(null, req.body.username, req.body.password);
+
+    let errorsArray = await passValidation.validatePass(newUser);
+    if (errorsArray.length > 0) {
+        res.status(400);
+        res.json({
+            errors: errorsArray
+        });
+        return;
+    }
 
     try {
+        newUser.password = await password.hashPassword(req.body.password);
         await accounts.insertUser(newUser);
         res.status(201);
         res.json(newUser)
