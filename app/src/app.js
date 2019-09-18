@@ -4,8 +4,8 @@ const app = express();
 const bodyParser = require('body-parser');
 const postValidation = require('./validation/post');
 const accounts = require ('./model/accounts');
+const password = require ('./security/password');
 app.use(bodyParser.json());
-
 
 app.get('/register', async (req, res) => {
     let users = await accounts.getUsers();
@@ -13,8 +13,8 @@ app.get('/register', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-
-    let newUser = new accounts.UserEntity(null, req.body.username, req.body.password);
+    let hashedPass = password.hashPassword(req.body.password);
+    let newUser = new accounts.UserEntity(null, req.body.username, hashedPass);
 
     try {
         await accounts.insertUser(newUser);
