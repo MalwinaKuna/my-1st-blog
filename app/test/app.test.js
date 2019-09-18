@@ -155,10 +155,23 @@ test ('add user', async ()=>{
     let result = request ('POST', `http://localhost:8080/register`, {
         json: {
             username: 'user99999',
-            password: 'somepass999'
+            password: 'somepass#$^999'
         }
     });
     expect(result.statusCode).toBe(201);
     let payload = JSON.parse(result.body);
+    await userModel.deleteUser(payload);
+})
+
+test ('add user', async ()=>{
+    let result = request ('POST', `http://localhost:8080/register`, {
+        json: {
+            username: 'user99999',
+            password: 'ww'
+        }
+    });
+    expect(result.statusCode).toBe(400);
+    let payload = JSON.parse(result.body);
+    expect(payload.errors).toEqual(['password must be at least 6 characters long','password must contain special signs']);
     await userModel.deleteUser(payload);
 })
