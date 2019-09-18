@@ -15,7 +15,7 @@ class UserEntity {
     }
 }
 /**
- * @param {PostEntity} post
+ * @param {UserEntity} accounts
  * @returns {Promise<undefind>}
  * @throws {MysqlError}
  */
@@ -44,7 +44,10 @@ async function deleteUser(accounts) {
         connection.query(
             `DELETE FROM users WHERE id='${accounts.id}';`,
             (error, results, fields) => {
-                if (error) resolve(false);
+                if (error) {
+                    resolve(false);
+                    return;
+                }
                 if (results.affectedRows > 0) {
                     resolve(true);
                     return;

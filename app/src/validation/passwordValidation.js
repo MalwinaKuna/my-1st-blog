@@ -2,7 +2,7 @@
  * @param {UserEntity} user
  * @returns {string[]}
  */
-const validatePass = async function (user) {
+const validatePassword = async function (user) {
     let error = [];
 
     if (user.password.length < 6) {
@@ -32,6 +32,6 @@ function hasSpecialSigns(password) {
 }
 
 module.exports = {
-    validatePass,
+    validatePassword,
     hasSpecialSigns
 };

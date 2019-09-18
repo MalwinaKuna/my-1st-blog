@@ -3,15 +3,15 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const postValidation = require('./validation/post');
-const accounts = require ('./model/accounts');
+const accounts = require ('./model/account');
 const password = require ('./security/password');
-const passValidation = require ('./validation/passwordValidation');
+const passwordValidation = require ('./validation/passwordValidation');
 app.use(bodyParser.json());
 
 app.post('/register', async (req, res) => {
     let newUser = new accounts.UserEntity(null, req.body.username, req.body.password);
 
-    let errorsArray = await passValidation.validatePass(newUser);
+    let errorsArray = await passwordValidation.validatePassword(newUser);
     if (errorsArray.length > 0) {
         res.status(400);
         res.json({
