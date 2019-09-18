@@ -23,6 +23,5 @@ function isPaswwordCorrect(plain, hash) {
 }
 
 module.exports = {
-    hashPassword,
-    isPaswwordCorrect
+    hashPassword
 }

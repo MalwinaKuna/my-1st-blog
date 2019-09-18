@@ -36,31 +36,6 @@ async function insertUser(accounts) {
 }
 
 /**
- * @returns {Promise<PostEntity[]>}
- * @throws {MysqlError}
- */
-async function getUsers() {
-    let promise = [];
-    promise = new Promise((resolve, reject) => {
-        connection.query(
-            `SELECT * FROM users;`,
-            (error, results, fields) => {
-                if (error) {
-                    reject(error);
-                    return;
-                }
-                let users = [];
-                for (let i = 0; i < results.length; i++) {
-                    users.push(new UserEntity(results[i].id, results[i].username, results[i].password)); //?
-                }
-                resolve(users);
-            }
-        );
-    })
-    return promise;
-}
-
-/**
  * @param {UserEntity} post
  * @returns {Promise<boolean>}- it depends on if the entity was deleted or not
  */
@@ -87,6 +62,5 @@ async function deleteUser(accounts) {
 module.exports = {
     UserEntity,
     insertUser,
-    getUsers,
     deleteUser
 }

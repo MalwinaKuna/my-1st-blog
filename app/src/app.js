@@ -8,11 +8,6 @@ const password = require ('./security/password');
 const passValidation = require ('./validation/passwordValidation');
 app.use(bodyParser.json());
 
-app.get('/register', async (req, res) => {
-    let users = await accounts.getUsers();
-    res.json(users);
-});
-
 app.post('/register', async (req, res) => {
     let newUser = new accounts.UserEntity(null, req.body.username, req.body.password);
 
@@ -29,7 +24,8 @@ app.post('/register', async (req, res) => {
         newUser.password = await password.hashPassword(req.body.password);
         await accounts.insertUser(newUser);
         res.status(201);
-        res.json(newUser)
+        res.end();
+        return;
     } catch (error) {
         console.error(error.toString());
         res.status(500);
