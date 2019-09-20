@@ -36,13 +36,13 @@ async function insertUser(accounts) {
 }
 
 /**
- * @param {UserEntity} post
+ * @param {string} username
  * @returns {Promise<boolean>}- it depends on if the entity was deleted or not
  */
-async function deleteUser(accounts) {
+async function deleteUser(username) {
     let promise = new Promise((resolve, reject) => {
         connection.query(
-            `DELETE FROM users WHERE id='${accounts.id}';`,
+            `DELETE FROM users WHERE username='${username}';`,
             (error, results, fields) => {
                 if (error) {
                     resolve(false);

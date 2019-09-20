@@ -34,6 +34,15 @@ app.post('/register', async (req, res) => {
     }
 });
 
+app.delete('/register/:username', async (req, res) => {
+
+    await accounts.deleteUser(req.params.username);
+    res.status(204);
+    res.end();
+    return;
+});
+
+
 app.delete('/posts/:id', async (req, res) => {
 
     if (isNaN(req.params.id)) {

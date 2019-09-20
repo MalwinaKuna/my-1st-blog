@@ -1,6 +1,6 @@
 const request = require('sync-request');
 const postModel = require('../src/model/post');
-const userModel = require('../src/model/accounts');
+const userModel = require('../src/model/account');
 
 test('check if post was added', async () => {
     let result = request('POST', 'http://localhost:8080/posts', {
@@ -151,17 +151,6 @@ test('post deleting', async () => {
     await postModel.deletePost(newPost);
 })
 
-test ('add user', async ()=>{
-    let result = request ('POST', `http://localhost:8080/register`, {
-        json: {
-            username: 'user99999',
-            password: 'somepass#$^999'
-        }
-    });
-    expect(result.statusCode).toBe(201);
-    let payload = JSON.parse(result.body);
-    await userModel.deleteUser(payload);
-})
 
 test ('add user', async ()=>{
     let result = request ('POST', `http://localhost:8080/register`, {
@@ -174,4 +163,16 @@ test ('add user', async ()=>{
     let payload = JSON.parse(result.body);
     expect(payload.errors).toEqual(['password must be at least 6 characters long','password must contain special signs']);
     await userModel.deleteUser(payload);
+})
+
+test('add user', async () => {
+    let username = 'k';
+    let result = request('POST', `http://localhost:8080/register`, {
+        json: {
+            username: username,
+            password: 'somepass#$^999'
+        }
+    });
+    expect(result.statusCode).toBe(201);
+    await userModel.deleteUser(username);
 })
