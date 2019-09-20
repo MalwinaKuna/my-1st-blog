@@ -165,6 +165,7 @@ test ('add user', async ()=>{
     await userModel.deleteUser(payload);
 })
 
+
 test('add user', async () => {
     let username = 'k';
     let result = request('POST', `http://localhost:8080/register`, {
